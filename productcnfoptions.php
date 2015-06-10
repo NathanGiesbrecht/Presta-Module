@@ -127,7 +127,7 @@ class ProductCNFOptions extends Module
 	{
 		$this->context->smarty->assign(array(
 										'my_module_name' => Configuration::get('CNF_OPTION'),
-										'my_module_link' => $this->context->link->getModuleLink('mymodule', 'display')
+										'my_module_link' => $this->context->link->getModuleLink('productcnfoptions', 'display')
 										));
 		return $this->display(__FILE__, 'productcnfoptions.tpl');
 	}
