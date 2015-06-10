@@ -1,7 +1,6 @@
 <?php
 if (!defined('_PS_VERSION_'))
-  exit;
-
+	exit;
 
 class ProductCNFOptions extends Module
 {
@@ -31,17 +30,14 @@ class ProductCNFOptions extends Module
 		if (Shop::isFeatureActive()) // Check if Multistore is enabled
 			Shop::setContext(Shop::CONTEXT_ALL); // Set the "context" to all stores
 
-		return !parent::install() &&
-			$this->registerHook('leftColumn') &&
-			$this->registerHook('header') &&
-			Configuration::updateValue('CNF_OPTION', 'CNF Product Options');
+		return !parent::install() && $this->registerHook('leftColumn') && $this->registerHook('header') && Configuration::updateValue('CNF_OPTION', 'CNF Product Options');
 	}
 
 	public function uninstall()
 	{
 		if (!parent::uninstall() || // Check that the parent Module class
-		   !Configuration::deleteByName('CNF_OPTION'))
-			return false;
+			!Configuration::deleteByName('CNF_OPTION'))
+				return false;
 
 		return true;
 	}
@@ -55,9 +51,9 @@ class ProductCNFOptions extends Module
 			$my_module_name = strval(Tools::getValue('CNF_OPTION')); // Gets our option as a string
 
 			if (!$my_module_name // Checks if the value is false
-			  || empty($my_module_name) // Checks if the value is empty
-			  || !Validate::isGenericName($my_module_name)) // Checks if the value is a "name"
-				$output .= $this->displayError($this->l('Invalid Configuration value')); // Outputs an error
+				|| empty($my_module_name) // Checks if the value is empty
+				|| !Validate::isGenericName($my_module_name)) // Checks if the value is a "name"
+					$output .= $this->displayError($this->l('Invalid Configuration value')); // Outputs an error
 			else
 			{
 				Configuration::updateValue('CNF_OPTION', $my_module_name); // Updates the configuration value
@@ -129,12 +125,10 @@ class ProductCNFOptions extends Module
 
 	public function hookDisplayLeftColumn($params)
 	{
-		$this->context->smarty->assign(
-			array(
-				'my_module_name' => Configuration::get('CNF_OPTION'),
-				'my_module_link' => $this->context->link->getModuleLink('mymodule', 'display')
-			)
-		);
+		$this->context->smarty->assign(array(
+										'my_module_name' => Configuration::get('CNF_OPTION'),
+										'my_module_link' => $this->context->link->getModuleLink('mymodule', 'display')
+										));
 		return $this->display(__FILE__, 'productcnfoptions.tpl');
 	}
 
