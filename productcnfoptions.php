@@ -31,13 +31,10 @@ class ProductCNFOptions extends Module
 		if (Shop::isFeatureActive()) // Check if Multistore is enabled
 			Shop::setContext(Shop::CONTEXT_ALL); // Set the "context" to all stores
 
-		if(!parent::install() || // Check that the Module parent class is installed (this is the "Module" that our current class extends
-		  !$this->registerHook('leftColumn') || // Check that we can hook into the leftColumn
-		  !$this->registerHook('header') || // Check that we can hook into the header
-		  !Configuration::updateValue('CNF_OPTION', 'CNF Product Options')) // Check that we were able to successfully install a config value for key CNF_OPTION
-			return false; // If any of the above fail, return false
-
-		return true; // Successfully installed
+		return !parent::install() &&
+			$this->registerHook('leftColumn') &&
+			$this->registerHook('header') &&
+			Configuration::updateValue('CNF_OPTION', 'CNF Product Options');
 	}
 
 	public function uninstall()
@@ -128,5 +125,27 @@ class ProductCNFOptions extends Module
 		$helper->fields_value['CNF_OPTION'] = Configuration::get('CNF_OPTION');
 
 		return $helper->generateForm($fields_form);
+	}
+
+	public function hookDisplayLeftColumn($params)
+	{
+		$this->context->smarty->assign(
+			array(
+				'my_module_name' => Configuration::get('CNF_OPTION'),
+				'my_module_link' => $this->context->link->getModuleLink('mymodule', 'display')
+			)
+		);
+
+		return $this->display(__FILE__, 'productcnfoptions.tpl');
+	}
+
+	public function hookDisplayRightColumn($params)
+	{
+		return $this->hookDisplayLeftColumn($params);
+	}
+
+	public function hookDisplayHeader()
+	{
+		$this->context->controller->addCSS($this->_path.'css/mymodule.css', 'all');
 	}
 }
