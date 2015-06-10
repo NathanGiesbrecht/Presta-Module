@@ -7,7 +7,7 @@ class ProductCNFOptions extends Module
 {
 	public function __construct()
 	{
-		$this->name = 'mymodule';
+		$this->name = 'productcnfoptions';
 		$this->tab = 'cnf_modules';
 		$this->version = '0.0.1';
 		$this->author = 'CNF Marketing';
@@ -42,7 +42,8 @@ class ProductCNFOptions extends Module
 
 	public function uninstall()
 	{
-		if (!parent::uninstall())
+		if (!parent::uninstall() || // Check that the parent Module class
+		   !Configuration::deleteByName('CNF_OPTION'))
 			return false;
 
 		return true;
