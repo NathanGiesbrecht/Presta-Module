@@ -39,4 +39,12 @@ class ProductCNFOptions extends Module
 
 		return true; // Successfully installed
 	}
+
+	public function uninstall()
+	{
+		if (!parent::uninstall())
+			return false;
+
+		return true;
+	}
 }
