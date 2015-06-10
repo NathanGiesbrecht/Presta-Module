@@ -135,7 +135,6 @@ class ProductCNFOptions extends Module
 				'my_module_link' => $this->context->link->getModuleLink('mymodule', 'display')
 			)
 		);
-
 		return $this->display(__FILE__, 'productcnfoptions.tpl');
 	}
 
@@ -146,6 +145,6 @@ class ProductCNFOptions extends Module
 
 	public function hookDisplayHeader()
 	{
-		$this->context->controller->addCSS($this->_path.'css/mymodule.css', 'all');
+		$this->context->controller->addCSS($this->_path.'css/productcnfoptions.css', 'all');
 	}
 }
