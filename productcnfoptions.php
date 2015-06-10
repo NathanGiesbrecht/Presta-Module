@@ -28,9 +28,15 @@ class ProductCNFOptions extends Module
 
 	public function install()
 	{
-		if(!parent::install())
-			return false;
+		if (Shop::isFeatureActive()) // Check if Multistore is enabled
+			Shop::setContext(Shop::CONTEXT_ALL); // Set the "context" to all stores
 
-		return true;
+		if(!parent::install() || // Check that the Module parent class is installed (this is the "Module" that our current class extends
+		  !$this->registerHook('leftColumn') || // Check that we can hook into the leftColumn
+		  !$this->registerHook('header') || // Check that we can hook into the header
+		  !Configuration::updateValue('CNF_OPTION', 'CNF Product Options')) // Check that we were able to successfully install a config value for key CNF_OPTION
+			return false; // If any of the above fail, return false
+
+		return true; // Successfully installed
 	}
 }
