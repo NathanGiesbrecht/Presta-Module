@@ -48,4 +48,25 @@ class ProductCNFOptions extends Module
 
 		return true;
 	}
+
+	public function getContent()
+	{
+		$output = null;
+
+		if (Tools::isSubmit('submit'.$this->name)) // Checks if the form has been "validated", ie. submitted
+		{
+			$my_module_name = strval(Tools::getValue('CNF_OPTION')); // Gets our option as a string
+
+			if (!$my_module_name // Checks if the value is false
+			  || empty($my_module_name) // Checks if the value is empty
+			  || !Validate::isGenericName($my_module_name)) // Checks if the value is a "name"
+				$output .= $this->displayError($this->l('Invalid Configuration value')); // Outputs an error
+			else
+			{
+				Configuration::updateValue('CNF_OPTION', $my_module_name); // Updates the configuration value
+				$output .= $this->displayConfirmation($this->l('Settings updated')); // Let the user know everything worked
+			}
+		}
+		return $output.$this->displayForm(); // Output the config pages form
+	}
 }
