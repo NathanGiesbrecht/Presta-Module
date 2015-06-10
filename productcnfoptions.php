@@ -22,7 +22,7 @@ class ProductCNFOptions extends Module
 
 		$this->confirmUninstall = $this->l('Are you sure you want to uninstall? Any data saved with this module will be lost!');
 
-		if (!Configuration::get('MYMODULE_NAME'))
+		if (!Configuration::get('CNF_OPTION'))
 			$this->warning = $this->l('No name provided');
 	}
 
